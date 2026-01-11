@@ -1,6 +1,6 @@
 class TopicModel {
   final String id;
-  final Map<String, String> name;
+  final Map<String, dynamic> name;
 
   TopicModel({required this.id, required this.name});
 
