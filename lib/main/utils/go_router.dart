@@ -7,7 +7,7 @@ final router = GoRouter(
   debugLogDiagnostics: true,
   routes: [
     GoRoute(path: '/home', builder: (context, state) => const HomePage()),
-    GoRoute(path: '/topic', builder: (context, state) => const TopicPage()),
+    GoRoute(path: '/topic', builder: (context, state) => const TopicsPage()),
     // GoRoute(
     //   path: '/home',
     //   builder: (context, state) => const HomePage(),

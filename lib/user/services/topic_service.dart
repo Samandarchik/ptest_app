@@ -8,16 +8,35 @@ class TopicService {
 
   Future<List<TopicModel>?> getTopics() async {
     try {
-      final response = await dio.get(AppUrls.topics);
+      final response = await dio.get(
+        AppUrls.topics,
+        queryParameters: {'limit': 50},
+        options: Options(
+          sendTimeout: Duration(seconds: 10),
+          receiveTimeout: Duration(seconds: 10),
+        ),
+      );
 
       if (response.statusCode == 200) {
-        return (response.data as List)
-            .map((e) => TopicModel.fromJson(e))
-            .toList();
+        if (response.data is List) {
+          return (response.data as List)
+              .map((e) => TopicModel.fromJson(e))
+              .toList();
+        }
       }
+      return null;
+    } on DioException catch (e) {
+      print('DioException: ${e.type} - ${e.message}');
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        print('Timeout error');
+      } else if (e.type == DioExceptionType.connectionError) {
+        print('Connection error - Server ishlamayapti yoki internet yo\'q');
+      }
+      return null;
     } catch (e) {
+      print('Unknown error: $e');
       return null;
     }
-    return [];
   }
 }
