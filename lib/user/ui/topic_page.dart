@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ptest/user/widgets/home_button.dart';
 import 'package:ptest/user/services/topic_service.dart';
 import 'package:ptest/user/models/topic_model.dart';
@@ -26,7 +27,6 @@ class _TopicsPageState extends State<TopicsPage> {
       body: FutureBuilder<List<TopicModel>?>(
         future: _topicsFuture,
         builder: (context, snapshot) {
-          print(snapshot.data);
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError || snapshot.data == null) {
@@ -36,17 +36,16 @@ class _TopicsPageState extends State<TopicsPage> {
           }
 
           final topics = snapshot.data!;
-          print(topics);
           return ListView.builder(
             itemCount: topics.length,
             itemBuilder: (context, index) {
-              print("length");
-              print(topics.length);
               return Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: HomeButton(
                   title: topics[index].name["uz"] ?? "",
-                  onTap: () {},
+                  onTap: () {
+                    context.push('/quiz/${topics[index].id}');
+                  },
                 ),
               );
             },
